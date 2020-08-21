@@ -59,11 +59,10 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:5000/auth/google/callback',
     },
-    (accessToken) => {
-      // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      //   return cb(err, user);
-      // });
-      console.log(accessToken);
+    (accessToken, refreshToken, profile, cb) => {
+      console.log('Access Token == >', accessToken);
+      console.log('refresh Token == >', refreshToken);
+      console.log('Profile == >', profile);
     }
   )
 );
@@ -75,8 +74,41 @@ app.get(
   })
 );
 
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+);
+
 //linkedin
-// passport.use(new LinkedInOAuth());
+passport.use(
+  new LinkedInOAuth(
+    {
+      clientID: process.env.LINKEDIN_CLIENT_ID,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+      callbackURL: 'http://localhost:5000/auth/linkedin/callback',
+    },
+    (accessToken, refreshToken, profile, cb) => {
+      console.log('Access Token == >', accessToken);
+      console.log('refresh Token == >', refreshToken);
+      console.log('Profile == >', profile);
+    }
+  )
+);
+
+app.get('/auth/linkedin', passport.authenticate('linkedin'));
+
+app.get(
+  '/auth/linkedin/callback',
+  passport.authenticate('linkedin', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+);
 
 // server
 const port = process.env.PORT || 5000;
