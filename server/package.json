@@ -1,0 +1,31 @@
+{
+  "name": "busrestro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "start:prod": "NODE_ENV=production nodemon app.js"
+  },
+  "author": "busrestro",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "datauri": "^3.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.20",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.4.11",
+    "parser": "^0.1.4",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-linkedin": "^1.0.0",
+    "passport-linkedin-oauth2": "^2.0.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
