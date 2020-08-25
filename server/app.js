@@ -10,24 +10,23 @@ require('dotenv').config();
 const authRoute = require('./routes/authRoute');
 
 const app = express();
-// DB Connection
-// const DB = process.env.DATABASE.replace(
-//   '<PASSWORD>',
-//   process.env.DATABASE_PASSWORD
-// );
 
-// mongoose
-//   .connect(DB, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     useCreateIndex: true,
-//   })
-//   .then(() => {
-//     console.log('DB CONNECTED SUCCESSFULLY');
-//   })
-//   .catch(() => {
-//     console.log('PROBLEM CONNECTING DB');
-//   });
+// DB Connection
+const DB = process.env.DATABASE;
+
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    console.log('DB CONNECTED SUCCESSFULLY');
+  })
+  .catch(() => {
+    console.log('PROBLEM CONNECTING DB');
+  });
 
 // middlewares
 app.use(cors());
