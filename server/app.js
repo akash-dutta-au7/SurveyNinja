@@ -1,15 +1,15 @@
 const express = require('express');
-const passport = require('passport');
-const GoogleOAuth = require('passport-google-oauth20').Strategy;
-const LinkedInOAuth = require('passport-linkedin-oauth2').Strategy;
 const morgan = require('morgan');
-const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
-dotenv.config({ path: './config.env' });
+require('./utils/passport.js');
+require('dotenv').config();
 
+const authRoute = require('./routes/authRoute');
+
+const app = express();
 // DB Connection
 // const DB = process.env.DATABASE.replace(
 //   '<PASSWORD>',
@@ -29,8 +29,6 @@ dotenv.config({ path: './config.env' });
 //     console.log('PROBLEM CONNECTING DB');
 //   });
 
-const app = express();
-
 // middlewares
 app.use(cors());
 app.use(function (req, res, next) {
@@ -48,68 +46,8 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// ROUTES
-// auth
-
-//google
-passport.use(
-  new GoogleOAuth(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5000/auth/google/callback',
-    },
-    (accessToken, refreshToken, profile, cb) => {
-      console.log('Access Token == >', accessToken);
-      console.log('refresh Token == >', refreshToken);
-      console.log('Profile == >', profile);
-    }
-  )
-);
-
-app.get(
-  '/auth/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-  })
-);
-
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }
-);
-
-//linkedin
-passport.use(
-  new LinkedInOAuth(
-    {
-      clientID: process.env.LINKEDIN_CLIENT_ID,
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5000/auth/linkedin/callback',
-    },
-    (accessToken, refreshToken, profile, cb) => {
-      console.log('Access Token == >', accessToken);
-      console.log('refresh Token == >', refreshToken);
-      console.log('Profile == >', profile);
-    }
-  )
-);
-
-app.get('/auth/linkedin', passport.authenticate('linkedin'));
-
-app.get(
-  '/auth/linkedin/callback',
-  passport.authenticate('linkedin', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }
-);
-
+//Routes
+app.use('/auth', authRoute);
 // server
 const port = process.env.PORT || 5000;
 
