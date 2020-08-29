@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema(
   {
-    googleId: String,
+    googleId: {
+      type: String,
+      unique: true,
+    },
     linkedInId: String,
   },
   { timestamps: true }
