@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -7,9 +9,20 @@ const cors = require('cors');
 require('./utils/passport.js');
 require('dotenv').config();
 
+const app = express();
+
 const authRoute = require('./routes/authRoute');
 
-const app = express();
+//PASSPORT JS settings
+app.use(
+  cookieSession({
+    maxAge: 3 * 60 * 60 * 1000,
+    keys: [process.env.PASSPORT_COOKIES],
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // DB Connection
 const DB = process.env.DATABASE;

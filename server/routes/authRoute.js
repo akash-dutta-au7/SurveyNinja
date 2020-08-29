@@ -16,9 +16,14 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     // Successful authentication, redirect home.
-    res.redirect('/');
+    res.send(req.user);
   }
 );
+
+router.get('/google/logout', (req, res) => {
+  req.logout();
+  res.send(req.user);
+});
 
 //LinkedIn
 router.get('/linkedin', passport.authenticate('linkedin'));
@@ -28,8 +33,15 @@ router.get(
   passport.authenticate('linkedin', { failureRedirect: '/login' }),
   (req, res) => {
     // Successful authentication, redirect home.
-    res.redirect('/');
+    res.send(req.user);
   }
 );
 
+router.get('/linkedin/logout', (req, res) => {
+  req.logout();
+  res.send(req.user);
+});
+
 module.exports = router;
+
+//localhost:5000/auth/google/logout

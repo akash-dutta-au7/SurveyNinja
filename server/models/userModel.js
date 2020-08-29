@@ -4,9 +4,10 @@ const userSchema = new mongoose.Schema(
   {
     googleId: {
       type: String,
-      unique: true,
     },
-    linkedInId: String,
+    linkedInId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
