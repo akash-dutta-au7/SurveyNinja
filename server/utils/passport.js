@@ -28,13 +28,14 @@ passport.use(
       User.findOne({ googleId: profile.id }).then((existingUser) => {
         if (existingUser) {
           console.log('User with this Google ID already exists');
+          done(null, existingUser);
         }
         const user = new User({ googleId: profile.id });
         user.save((err, user) => {
-          if (err) {
-            return 'Not being able to save user';
+          if (user) {
+            done(null, user);
           }
-          done(null, user);
+          return 'Not being able to save user';
         });
       });
     }
