@@ -22,7 +22,11 @@ router.get(
 
 router.get('/google/logout', (req, res) => {
   req.logout();
-  res.send(req.user);
+  res
+    .json({
+      messsage: "You've successfully logged out",
+    })
+    .send(req.user);
 });
 
 //LinkedIn
@@ -39,7 +43,7 @@ router.get(
 
 router.get('/linkedin/logout', (req, res) => {
   req.logout();
-  res.send(req.user);
+  res.send("You've successfully logged out");
 });
 
 module.exports = router;
