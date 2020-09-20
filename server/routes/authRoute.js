@@ -22,8 +22,7 @@ router.get(
 
 router.get('/google/logout', (req, res) => {
   req.logout();
-  res
-    .json({
+  res.status(200).json({
       messsage: "You've successfully logged out",
     })
     .send(req.user);
